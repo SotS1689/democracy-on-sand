@@ -1,0 +1,99 @@
+"""Rebuild data.js from the pastor's spreadsheets.
+
+Run:  python tools/build_data.py
+Reads from Documents\\Resources\\Practical Theology\\Politics\\Democracy.
+"""
+import csv, json, statistics, datetime
+from pathlib import Path
+import openpyxl
+
+SRC = Path.home() / "Documents/Resources/Practical Theology/Politics/Democracy"
+OUT = Path(__file__).resolve().parent.parent / "data.js"
+
+WINNERS = ["Washington", "Washington", "J. Adams", "Jefferson", "Jefferson", "Madison", "Madison",
+    "Monroe", "Monroe", "J. Q. Adams", "Jackson", "Jackson", "Van Buren", "W. H. Harrison", "Polk",
+    "Taylor", "Pierce", "Buchanan", "Lincoln", "Lincoln", "Grant", "Grant", "Hayes", "Garfield",
+    "Cleveland", "B. Harrison", "Cleveland", "McKinley", "McKinley", "T. Roosevelt", "Taft", "Wilson",
+    "Wilson", "Harding", "Coolidge", "Hoover", "F. D. Roosevelt", "F. D. Roosevelt", "F. D. Roosevelt",
+    "F. D. Roosevelt", "Truman", "Eisenhower", "Eisenhower", "Kennedy", "L. B. Johnson", "Nixon", "Nixon",
+    "Carter", "Reagan", "Reagan", "G. H. W. Bush", "Clinton", "Clinton", "G. W. Bush", "G. W. Bush",
+    "Obama", "Obama", "Trump", "Biden", "Trump"]
+
+r4 = lambda x: round(x, 4)
+
+# Presidential elections
+wb = openpyxl.load_workbook(SRC / "Voting/USA Election Data.xlsx", data_only=True)
+rows = [r for r in wb["Data"].iter_rows(min_row=2, values_only=True) if r[0]]
+assert len(rows) == len(WINNERS), (len(rows), len(WINNERS))
+pres = [{"year": y, "winner": w, "turnout": r4(t), "ofVotes": r4(v), "ofPop": r4(p)}
+        for (y, t, v, p, _), w in zip(rows, WINNERS)]
+
+# Congress: reelection rates + yearly approval averages
+wb = openpyxl.load_workbook(SRC / "Congress Approval and Reelection Rate.xlsx", data_only=True)
+cong = [{"year": y, "house": h, "senate": s, "approval": round(a, 1) if a is not None else None}
+        for y, h, s, a in wb["Sheet1"].iter_rows(min_row=2, values_only=True) if y]
+
+# Individual Gallup polls
+polls = []
+with open(SRC / "Congress Approval Rating by Year.csv", encoding="utf-8-sig") as f:
+    for row in csv.DictReader(f):
+        d = datetime.datetime.strptime(row["Year"].strip(), "%b %d %Y").date()
+        polls.append([d.isoformat(), float(row["% Approve"])])
+polls.sort()
+
+def corr(key):
+    pts = [(c["approval"], c[key]) for c in cong if c["approval"] is not None and c[key] is not None]
+    xs, ys = zip(*pts)
+    return {"r": round(statistics.correlation(xs, ys), 2), "n": len(pts)}
+
+# Pew Research Center, "Public Trust in Government: 1958-2025" (Dec 4, 2025), saved in sources/
+trust = []
+with open(Path(__file__).resolve().parent.parent / "sources/pew_trust_1958_2025.csv", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        d = datetime.datetime.strptime(row["date"], "%m/%d/%Y").date()
+        trust.append([d.isoformat(), int(row["percent_individual"]), int(row["percent_smoothed"])])
+trust.sort()
+
+# Elections where the winner lost the popular vote (share of votes cast, %)
+# Source: Wikipedia, "List of United States presidential elections in which the winner lost the popular vote"
+popLosers = [
+    {"year": 1824, "winner": "J. Q. Adams", "winnerPct": 30.9, "leader": "Jackson", "leaderPct": 41.4},
+    {"year": 1876, "winner": "Hayes", "winnerPct": 47.9, "leader": "Tilden", "leaderPct": 50.9},
+    {"year": 1888, "winner": "B. Harrison", "winnerPct": 47.8, "leader": "Cleveland", "leaderPct": 48.6},
+    {"year": 2000, "winner": "G. W. Bush", "winnerPct": 47.9, "leader": "Gore", "leaderPct": 48.4},
+    {"year": 2016, "winner": "Trump", "winnerPct": 46.1, "leader": "Clinton", "leaderPct": 48.2},
+]
+
+# U.S. House races by margin of victory (of 435). Source: Ballotpedia,
+# "Congressional elections decided by 10 percentage points or fewer, 2014-present"
+margins = [
+    {"year": 2018, "within5": 45, "within10": 90},
+    {"year": 2020, "within5": 37, "within10": 77},
+    {"year": 2022, "within5": 40, "within10": 75},
+    {"year": 2024, "within5": 37, "within10": 69},
+]
+
+# Unite America Institute "Primary Problem": share of voting-age Americans whose primary
+# votes effectively decided the share of House seats (safe seats).
+primaries = [
+    {"year": 2020, "voters": 10, "seats": 83},
+    {"year": 2022, "voters": 8, "seats": 83},
+    {"year": 2024, "voters": 7, "seats": 87},
+]
+
+# Gilens & Page (2014), Perspectives on Politics 12(3). 1,779 policy cases, 1981-2002.
+# Table 3, model 4 coefficients; predicted probabilities from the text discussing Figure 1.
+gilens = {
+    "coef": {"citizens": 0.03, "elites": 0.76, "groups": 0.56},
+    "adopt": {"citizensLow": 30, "citizensHigh": 30, "elitesLow": 18, "elitesHigh": 45, "groupsLow": 16, "groupsHigh": 47},
+    "bigMajority": 43,
+}
+
+data = {"pres": pres, "congress": cong, "polls": polls,
+        "corr": {"house": corr("house"), "senate": corr("senate")},
+        "trust": trust, "popLosers": popLosers, "margins": margins,
+        "primaries": primaries, "gilens": gilens}
+OUT.write_text("// Generated by tools/build_data.py -- do not edit by hand\nwindow.DATA = "
+               + json.dumps(data, separators=(",", ":")) + ";\n", encoding="utf-8")
+print("wrote", OUT, "| pres", len(pres), "| congress", len(cong), "| polls", len(polls), "|", data["corr"])
+print("max ofPop:", max(pres, key=lambda p: p["ofPop"]))

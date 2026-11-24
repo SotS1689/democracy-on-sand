@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script>if (navigator.standalone) document.documentElement.classList.add("installed");</script>
+    <meta charset="utf-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW31K785WW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YW31K785WW');
+    </script>
+    <script>try { const t = JSON.parse(localStorage.getItem("sandTheme")); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Built on Sand</title>
+    <meta name="description" content="No U.S. president has ever been chosen by a majority of voting-age Americans, and Congress keeps getting reelected no matter how unpopular it is. See the numbers.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Built on Sand">
+    <meta property="og:description" content="No president has ever won a majority of voting-age Americans. Congress is reelected at 90%+ with approval near 20%. See the numbers.">
+    <meta property="og:image" content="https://sots1689.github.io/democracy-on-sand/icons/og-image.png">
+    <meta property="og:url" content="https://sots1689.github.io/democracy-on-sand/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#1f1c18">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="title-row">
+        <a class="icon-btn" id="home" href="https://taylordrummond.org/" aria-label="Home: taylordrummond.org" title="taylordrummond.org">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8M5 9.5V21h5v-6h4v6h5V9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <span class="brand">Built on Sand</span>
+    </div>
+    <button class="icon-btn" id="theme" type="button" aria-label="Switch light/dark theme" title="Light/dark theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    </button>
+    <a class="icon-btn" href="#privacy" aria-label="About and privacy" title="About and privacy">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.01" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </a>
+    <div class="support-wrap">
+        <a class="icon-btn" id="support" href="https://buymeacoffee.com/taylordrummond" target="_blank" rel="noopener" aria-label="Support" title="Support">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path class="heart" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </a>
+        <div id="support-callout" role="dialog" aria-label="Support this project">
+            <div class="support-callout-arrow"></div>
+            <p class="support-callout-title">A quick note &mdash;</p>
+            <p class="support-callout-body">This project is built and maintained in spare time so that anyone can use it for free. If it's been a help to you, would you consider supporting it? Every bit keeps it running for the next person too.</p>
+            <div class="support-callout-actions">
+                <a href="https://buymeacoffee.com/taylordrummond" target="_blank" rel="noopener" class="support-callout-btn support-callout-btn-primary" data-support="acted">Yes</a>
+                <button type="button" class="support-callout-btn support-callout-btn-secondary" data-support="later">Maybe later</button>
+                <button type="button" class="support-callout-btn support-callout-btn-text" data-support="forever">Don't ask again</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <h1>Built on Sand</h1>
+        <p class="lede">Democracy promises a government that reflects the consent of the majority, but the numbers tell a different story.</p>
+        <div class="tiles">
+            <a class="tile" href="#president">
+                <span class="tile-num"><span id="t-maj">0</span> of <span id="t-elec">60</span></span>
+                <span class="tile-label">presidential elections where the winner got votes from most voting-age adults</span>
+                <span class="tile-note" id="t-best"></span>
+            </a>
+            <a class="tile" href="#congress">
+                <span class="tile-num"><span id="t-appr">–</span>% → <span id="t-reel">–</span>%</span>
+                <span class="tile-label">Congress's average approval, compared with how often House members who ran again were reelected</span>
+                <span class="tile-note" id="t-span"></span>
+            </a>
+        </div>
+    </section>
+
+    <section id="president" class="block">
+        <p class="kicker">Part 1 · The presidency</p>
+        <h2>No president has ever been chosen by most of the people</h2>
+        <p>Election-night results show a winner's share of the <em>votes cast</em>. Flip the switch to see each winner's share of <em>every adult who could have voted</em>, including the ones who stayed home.</p>
+
+        <div class="controls" role="group" aria-label="Measure">
+            <div class="seg" id="pres-mode">
+                <button type="button" data-mode="ofVotes" aria-pressed="true">Share of votes cast</button>
+                <button type="button" data-mode="ofPop" aria-pressed="false">Share of all voting-age adults</button>
+            </div>
+        </div>
+        <p class="callout-line" id="pres-summary" aria-live="polite"></p>
+        <div class="chart" id="pres-chart"></div>
+
+        <h3>Picture 100 adults</h3>
+        <p class="callout-line">No president has ever received the majority of votes from the voting-age population.</p>
+        <p>Choose an election. Each dot is one in every hundred voting-age adults.</p>
+        <div class="controls">
+            <label class="select-wrap">Election
+                <select id="waffle-year"></select>
+            </label>
+        </div>
+        <div class="waffle-wrap">
+            <div class="waffle" id="waffle" role="img"></div>
+            <ul class="waffle-legend" id="waffle-legend"></ul>
+        </div>
+
+        <h3>Five presidents lost the popular vote</h3>
+        <p>In five elections, more voters chose someone else, and that person still did not become president.</p>
+        <div class="legend">
+            <span><i style="background:var(--s-orange)"></i>Became president</span>
+            <span><i style="background:var(--s-blue)"></i>Won the most votes</span>
+        </div>
+        <div class="chart" id="losers-chart"></div>
+
+        <details class="table-view">
+            <summary>Show the numbers as a table</summary>
+            <div class="table-scroll"><table id="pres-table"></table></div>
+        </details>
+    </section>
+
+    <section id="congress" class="block">
+        <p class="kicker">Part 2 · Congress</p>
+        <h2>Unpopular, and reelected anyway</h2>
+        <p>Gallup has asked Americans since 1974 whether they approve of the job Congress is doing. Next to that is the share of House and Senate incumbents who ran again and won.</p>
+        <div class="legend" id="cong-legend"></div>
+        <div class="chart" id="cong-chart"></div>
+
+        <h3>Does approval move reelection?</h3>
+        <p>Each dot is one election year: Congress's approval that year (left to right) against the reelection rate (bottom to top). If voters held Congress to account, the dots would climb from lower left to upper right.</p>
+        <div class="legend" id="scatter-legend"></div>
+        <div class="chart" id="scatter-chart"></div>
+        <div class="corr" id="corr"></div>
+
+        <h3>Trust collapsed. Reelection didn't.</h3>
+        <p class="callout-line" id="trust-summary"></p>
+        <p>The share of Americans who trust the federal government to do what is right “just about always” or “most of the time,” next to the House reelection rate.</p>
+        <div class="legend">
+            <span><i class="line" style="background:var(--s-yellow)"></i>Trust in government (trend)</span>
+            <span><i style="background:var(--s-yellow);border-radius:50%;opacity:.45"></i>Individual polls</span>
+            <span><i class="line" style="background:var(--s-blue)"></i>House incumbents reelected</span>
+        </div>
+        <div class="chart" id="trust-chart"></div>
+
+        <details class="table-view">
+            <summary>Show the numbers as a table</summary>
+            <div class="table-scroll"><table id="cong-table"></table></div>
+        </details>
+    </section>
+
+    <section id="primaries" class="block">
+        <p class="kicker">Part 3 · Elections already over</p>
+        <h2>Most House seats are settled before Election Day</h2>
+        <p>Most House districts are drawn so safely for one party that the November election is a formality. The real choice is made in that party's primary, and very few people vote in it.</p>
+        <div class="stat-row" id="primary-stats"></div>
+        <div class="legend">
+            <span><i style="background:var(--s-blue)"></i>House seats effectively decided in the primary</span>
+            <span><i style="background:var(--s-orange)"></i>Voting-age Americans who cast those deciding votes</span>
+        </div>
+        <div class="chart" id="primary-chart"></div>
+
+        <h3>Few races are even close</h3>
+        <p>All 435 House races, sorted by how far apart the top two candidates finished.</p>
+        <div class="legend">
+            <span><i style="background:var(--m-close)"></i>Within 5 points</span>
+            <span><i style="background:var(--m-mid)"></i>5–10 points</span>
+            <span><i style="background:var(--m-blow)"></i>More than 10 points</span>
+        </div>
+        <div class="chart" id="margin-chart"></div>
+    </section>
+
+    <section id="policy" class="block">
+        <p class="kicker">Part 4 · Whose opinion counts</p>
+        <h2>What most people want barely moves policy</h2>
+        <p>Political scientists Martin Gilens (Princeton) and Benjamin Page (Northwestern) looked at 1,779 proposed policy changes from 1981 to 2002. For each one they knew what average Americans (middle income) wanted, what affluent Americans (top 10% by income) wanted, and where organized interest groups stood, and whether the change became law.</p>
+        <p class="callout-line" id="policy-summary"></p>
+        <h3 class="chart-q">If this group switches from opposing a policy to supporting it, how much do the policy's chances change?</h3>
+        <div class="legend">
+            <span><i style="background:var(--s-gray);border-radius:50%"></i>Chance it becomes law when the group opposes it</span>
+            <span><i style="background:var(--s-blue);border-radius:50%"></i>Chance when the group supports it</span>
+        </div>
+        <div class="chart" id="policy-chart"></div>
+        <p class="chart-foot" id="policy-foot"></p>
+    </section>
+
+    <section class="block notes" id="notes">
+        <h2>Sources and notes</h2>
+        <ul>
+            <li>Presidential results and turnout: U.S. election data compiled in <em>USA Election Data.xlsx</em>. “Share of voting-age adults” = turnout rate × winner's share of votes cast.</li>
+            <li>Before about 1828, many state legislatures chose presidential electors without a popular vote, so the early turnout figures are very low.</li>
+            <li>Congressional reelection rates: <a href="https://www.opensecrets.org/elections-overview/reelection-rates" target="_blank" rel="noopener">OpenSecrets</a>. Approval: <a href="https://news.gallup.com/poll/1600/congress-public.aspx" target="_blank" rel="noopener">Gallup</a>, averaged over each calendar year's polls (the thin line shows every poll).</li>
+            <li>The “r” number is a standard correlation: 0 means no relationship, 1 means the two move in lockstep.</li>
+            <li>Popular-vote losers: share of votes cast, from <a href="https://en.wikipedia.org/wiki/List_of_United_States_presidential_elections_in_which_the_winner_lost_the_popular_vote" target="_blank" rel="noopener">Wikipedia's list</a>. In 1824 no one won a majority of electoral votes and the House of Representatives chose Adams.</li>
+            <li>Trust in government: <a href="https://www.pewresearch.org/politics/2025/12/04/public-trust-in-government-1958-2025/" target="_blank" rel="noopener">Pew Research Center, “Public Trust in Government: 1958–2025”</a> (data from Pew, the National Election Studies, Gallup, ABC/Washington Post, CBS/New York Times and CNN). The trend line is Pew's three-survey moving average.</li>
+            <li>Primaries: <a href="https://uniteamerica.org/articles/analysis-87-of-u-s-house-elections-already-determined-in-primaries-by-just-7-of-americans" target="_blank" rel="noopener">Unite America Institute, “Primary Problem”</a>. A seat counts as decided in the primary when it is safe for one party in November. The voter share is of all voting-age Americans.</li>
+            <li>House margins: <a href="https://ballotpedia.org/Congressional_elections_decided_by_10_percentage_points_or_fewer,_2014-present" target="_blank" rel="noopener">Ballotpedia</a>, House races only.</li>
+            <li>Policy influence: Martin Gilens and Benjamin I. Page, “Testing Theories of American Politics,” <em>Perspectives on Politics</em> 12, no. 3 (2014): 564–81. Adoption rates are the paper's stated predicted probabilities with the other groups held at neutral. Coefficients are from Table 3, Model 4.</li>
+        </ul>
+    </section>
+
+    <section class="block notes" id="privacy">
+        <h2>About and privacy</h2>
+        <p><strong>Privacy.</strong> Built on Sand uses Google Analytics to count visits and see which features get used, so the app can be improved. You don't need an account, and nothing you type into the app is collected. Your data will never be sold or given away.</p>
+    </section>
+</main>
+
+<div class="tooltip" id="tooltip" role="status" hidden></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
