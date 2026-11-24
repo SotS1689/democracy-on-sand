@@ -26,4 +26,4 @@ Then open http://localhost:8765.
 
 ## Deploy
 
-Plain static files. Meant for GitHub Pages at `https://sots1689.github.io/democracy-on-sand/` (not published yet).
+Plain static files. Meant for GitHub Pages at `https://taylordrummond.org/democracy-on-sand/` (not published yet).
